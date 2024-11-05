@@ -40,7 +40,7 @@ export const Banner = (props) => {
 
     useEffect(() => {
         // get non expired promotions
-        getPromotions();
+       // getPromotions();
     }, []);
 
     const getPromotions = useCallback(async () => {

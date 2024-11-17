@@ -40,17 +40,17 @@ export const Banner = (props) => {
 
     useEffect(() => {
         // get non expired promotions
-       // getPromotions();
+       getPromotions();
     }, []);
 
     const getPromotions = useCallback(async () => {
         try {
             const res = await API.getAllPromotions();
             if (res.data.promotionsList && res.data.promotionsList.length) {
+                
                 let promotionSlide = []
                 for (let promotion of res.data.promotionsList) {
-                    console.log(promotion)
-                    promotionSlide.push({ name: promotion.photo, isPromotion: true, id: promotion._id })
+                    promotion.status == 'yes' && promotionSlide.push({ name: promotion.photo, isPromotion: true, id: promotion._id })
                 }
                 setSplideImages([...splideImages, ...promotionSlide])
             }

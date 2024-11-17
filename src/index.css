@@ -627,6 +627,10 @@ footer .icons-wrapper a {
     height: 100%;
 }
 
+.cursorPointer {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 480px) {
     .logo-mobile {
         width: 70px;

@@ -97,7 +97,6 @@ export const HomeList = () => {
     return (
         <div className="bg-black">
             <Banner page="lobby" />
-
             <div className="flex flex-col px-2 md:px-8 w-full gap-4 md:gap-10">
                 <NavBar />
 

@@ -138,7 +138,7 @@ export const Banner = (props) => {
                                     <SplideSlide key={key}>
                                         <img
                                             src={(imgURL.isPromotion) ? `https://bundaii.com/ama-bundai/uploads/${imgURL?.name}` : require(`../assets/img/banner/${imgURL.name}.jpg`)}
-                                            className="rounded-xl"
+                                            className="rounded-xl" style={{height:'200px'}}
                                             onClick={() => signUp(imgURL)}
                                         />
                                     </SplideSlide>

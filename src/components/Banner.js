@@ -14,7 +14,7 @@ import SportsGameImg from "../assets/img/submenus/sports_game.png";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { useEffect, useState, useCallback } from "react";
 import * as API from "../services/api";
-import Login from "./signs/Login";
+import RegisterEmail from "./signs/RegisterEmail";
 // import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export const Banner = (props) => {
@@ -159,7 +159,7 @@ export const Banner = (props) => {
           <img src={SportsGameImg} alt="cryptoImage" className="w-full md:w-[22%]"   />
       </div> */}
 
-            <Login
+            <RegisterEmail
                 open={open}
                 setOpen={setOpen}
                 type={type}

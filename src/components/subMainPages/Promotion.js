@@ -126,7 +126,7 @@ export const Promotion = () => {
 									// setPromotionId(promotionItem?._id)
 								}}
 							/>
-							{promotionItem?.details}
+							<p style={{color:'white'}}>{promotionItem?.details}</p>
 						</div>
 					))}
 				</div>

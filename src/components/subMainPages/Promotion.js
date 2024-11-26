@@ -111,7 +111,7 @@ export const Promotion = () => {
 
 	return (
 		<>
-			<div className='mt-10 px-[32px] mb-8'>
+			<div className='mt-10 px-[32px] mb-8'><p style={{color:'rgba(239, 176, 52, 1)',marginBottom:'20px',fontSize:'larger',fontWeight:'bolder'}}>Promotions</p>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 					{promotionItems && promotionItems.length && promotionItems.map((promotionItem, index) => (
 						promotionItem.status == 'yes' && <div key={index} className="w-auto  border-2 border-[var(--secondaryColor)] rounded cursorPointer">

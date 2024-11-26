@@ -147,6 +147,7 @@ export default function Login({ open, setOpen, type, setType }) {
         await axios
             .request(options)
             .then(function (response) {
+                console.log("responseeeeeeeeeeeeee login ----"+response.data.token)
                 if (response.data.status === "0000") {
                     window.localStorage.setItem("token", response.data.token);
                     API.setAuthToken(response.data.token);

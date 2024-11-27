@@ -1,5 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import * as API from "../../services/api";
 import RegisterEmail from "../signs/RegisterEmail";
@@ -7,6 +9,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import check_icon from "../../assets/img/check.svg";
 
 export const Promotion = () => {
 	const { t } = useTranslation()
@@ -22,6 +25,7 @@ export const Promotion = () => {
 	const [type, setType] = useState("");
 	const [promotionId, setPromotionId] = useState("");
 	const [userInfo, setUserInfo] = useState({});
+	const [modalOpen, setModalOpen] = useState({isopen:false,message:'',header:''});
 
 	const isLogin = useSelector((state) => state.loginState.isLogin);
 	const dispatch = useDispatch();
@@ -70,27 +74,9 @@ export const Promotion = () => {
 			.request(options)
 			.then(function (response) {
 				if (response.data.res == "sucess") {
-					toast.success(response.data.msg, {
-						position: "top-right",
-						autoClose: 5000,
-						hideProgressBar: false,
-						closeOnClick: true,
-
-						draggable: true,
-						progress: undefined,
-						theme: "light",
-					});
+					setModalOpen({isopen:true,message:response.data.msg,header:'Sucess'});
 				} else if(response.data.res == "warning") {
-					toast.warning(response.data.msg, {
-						position: "top-right",
-						autoClose: 5000,
-						hideProgressBar: false,
-						closeOnClick: true,
-
-						draggable: true,
-						progress: undefined,
-						theme: "light",
-					});
+					setModalOpen({isopen:true,message:response.data.msg,header:'Warning'});
 				}
 			})
 			.catch(function (error) {
@@ -109,6 +95,7 @@ export const Promotion = () => {
 			});
 	}
 
+	const closeModal = () => setModalOpen({isopen:false,message:'',header:''});
 	return (
 		<>
 			<div className='mt-10 px-[32px] mb-8'><p style={{color:'rgba(239, 176, 52, 1)',marginBottom:'20px',fontSize:'larger',fontWeight:'bolder'}}>Promotions</p>
@@ -120,13 +107,24 @@ export const Promotion = () => {
 								alt={`Image ${index + 1}`}
 								className="w-full h-auto"
 								onClick={() => {
-									handlePromotionCode(promotionItem?._id,userInfo._id);
+									 handlePromotionCode(promotionItem?._id,userInfo._id);
 									// setOpen(true);
 									// setType("signup_email");
 									// setPromotionId(promotionItem?._id)
 								}}
 							/>
-							<p style={{color:'white',padding:'20px'}}>{promotionItem?.details}</p>
+							<div className='text-white p-4  flex flex-col justify-between'>
+							<p >{promotionItem?.details}</p>
+							{userInfo?.promotionId === promotionItem?._id ?
+							 	<p className='flex items-center justify-center mt-7 gap-2 text-[var(--logoutBg)]'><img src={check_icon} alt="eye icon" className='h-7 w-7'/>Current active promotion</p>
+							  	:
+								<div className='flex items-center justify-center '>
+								<button className="bg-[var(--logoutBg)] text-black mt-2 font-bold py-2 px-4 rounded" onClick={()=>handlePromotionCode(promotionItem?._id,userInfo._id)}>
+									Apply this promotion
+								</button>
+								</div>
+							}
+							</div>
 						</div>
 					))}
 				</div>
@@ -140,8 +138,57 @@ export const Promotion = () => {
 					pauseOnFocusLoss
 					draggable
 					theme="light"
-				/>
+				/>		
 			</div>
+			<Transition appear show={modalOpen?.isopen} as={Fragment}>
+			<Dialog as="div" className="relative z-10" onClose={closeModal}>
+			<Transition.Child
+				as={Fragment}
+				enter="ease-out duration-300"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				leave="ease-in duration-200"
+				leaveFrom="opacity-100"
+				leaveTo="opacity-0"
+			>
+				<div className="fixed inset-0 bg-black bg-opacity-25" />
+			</Transition.Child>
+
+			<div className="fixed inset-0 flex items-center justify-center p-4">
+				<Transition.Child
+				as={Fragment}
+				enter="ease-out duration-300"
+				enterFrom="opacity-0 scale-95"
+				enterTo="opacity-100 scale-100"
+				leave="ease-in duration-200"
+				leaveFrom="opacity-100 scale-100"
+				leaveTo="opacity-0 scale-95"
+				>
+				<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-center shadow-xl transition-all">
+					<Dialog.Title
+					as="h3"
+					className="text-lg font-medium leading-6 text-gray-900"
+					>
+					{modalOpen?.header}
+					</Dialog.Title>
+					<div className="mt-4">
+					<p className="text-sm text-gray-500">
+					{modalOpen?.message}
+					</p>
+					</div>
+					<div className="mt-6">
+					<button
+						className="px-4 py-2 bg-[var(--logoutBg)] text-black rounded hover:bg-red-700"
+						onClick={closeModal}
+					>
+						Close
+					</button>
+					</div>
+				</Dialog.Panel>
+				</Transition.Child>
+			</div>
+			</Dialog>
+      </Transition>
 			<RegisterEmail
 				open={open}
 				setOpen={setOpen}

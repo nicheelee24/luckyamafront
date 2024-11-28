@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import * as API from "../../services/api";
-import RegisterEmail from "../signs/RegisterEmail";
+import Login from '../signs/Login';
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
@@ -55,7 +55,7 @@ export const Promotion = () => {
 			savePromotionToUser(promotion_id,user_id);
 		} else {
 			setOpen(true);
-			setType("signup_email");
+			setType("login");
 			setPromotionId(promotion_id)
 		}
 	}, [])
@@ -189,13 +189,12 @@ export const Promotion = () => {
 			</div>
 			</Dialog>
       </Transition>
-			<RegisterEmail
-				open={open}
-				setOpen={setOpen}
-				type={type}
-				setType={setType}
-				promotionId={promotionId}
-			/>
+	  <Login
+                open={open}
+                setOpen={setOpen}
+                type={type}
+                setType={setType}
+            />
 		</>
 	)
 }

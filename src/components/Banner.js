@@ -14,7 +14,7 @@ import SportsGameImg from "../assets/img/submenus/sports_game.png";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { useEffect, useState, useCallback } from "react";
 import * as API from "../services/api";
-import RegisterEmail from "./signs/RegisterEmail";
+import Login from "./signs/Login";
 // import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export const Banner = (props) => {
@@ -65,7 +65,7 @@ export const Banner = (props) => {
         if (content.isPromotion) {
             console.log("this is my promotion")
             setPromotionId(content._id);
-            setType("signup_email");
+            setType("login");
             setOpen(true);
         }
     }
@@ -159,12 +159,11 @@ export const Banner = (props) => {
           <img src={SportsGameImg} alt="cryptoImage" className="w-full md:w-[22%]"   />
       </div> */}
 
-            <RegisterEmail
+       <Login
                 open={open}
                 setOpen={setOpen}
                 type={type}
                 setType={setType}
-                promotionId={promotionId}
             />
         </>
     );

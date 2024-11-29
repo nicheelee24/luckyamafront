@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,6 +21,7 @@ import { SideIcon } from "../SideIcon";
 import LanguageSelector from "../LanguageSelector";
 import Deposit from "../transfer/Deposit";
 import Withdraw from "../transfer/Withdraw";
+import * as API from "../../services/api";
 
 const routeMappings = {
     "/": 0,
@@ -62,6 +63,10 @@ export const Aside = () => {
 
     const [withdrawOpen, setWithdrawOpen] = useState(false);
 
+    const [promotionItems, setPromotionItems] = useState(null);
+    const [IdWisePromotion, setIdWisePromotion] = useState(null);
+    const [userInfo, setUserInfo] = useState({});
+
     useEffect(() => {
         if (!expandMenuState) {
             dispatch(reverse());
@@ -83,6 +88,55 @@ export const Aside = () => {
         langRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [isLang]);
 
+    const getPromotions = useCallback(async () => {
+        try {
+            const res = await API.getAllPromotions(true);
+            if (res?.data?.promotionsList) {
+                setPromotionItems(res?.data?.promotionsList);
+            }
+        } catch (error) {
+            console.error("Error while fetching promotions:", error);
+        }
+    },[]);
+
+    useEffect(() => {
+        if(userInfo && userInfo?.promotionId && promotionItems && promotionItems.length){
+            try {
+                const filteredPromotions = promotionItems?.find(
+                    (promo) => promo._id === userInfo?.promotionId
+                );
+                setIdWisePromotion(filteredPromotions);
+            } catch (error) {
+                console.error("Error while fetching promotions:", error);
+            }
+        }
+    }, [userInfo,promotionItems,isLogin]);
+
+    useEffect(() => {
+        if(isLogin){
+            getUserInfo();
+        }
+    },[isLogin]);
+
+    const getUserInfo = useCallback(async () => {
+		const res = await API.getUserInfo();
+		if(res?.data) {
+			 setUserInfo(res.data);
+		}
+	}, [])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await getPromotions();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchData();
+    }, []);
+    
     const registerList = [
         {
             Text: t("Log In"),
@@ -98,36 +152,36 @@ export const Aside = () => {
     const gameListLeft = [
         {
             Text: t("Lobby"),
-            Type: "ALL",
+            Type:"lobby"
         },
         {
             Text: t("Slots"),
-            Type: "SLOT",
+            Type: "slot",
         },
         {
             Text: t("Live Casino"),
-            Type: "LIVE",
+            Type: "live",
         },
         {
             Text: t("Table Game"),
-            Type: "TABLE",
+            Type: "table",
         },
         {
             Text: t("Sports"),
-            Type: "ESPORTS",
+            Type: "sports",
         },
         {
             Text: t("EGame"),
-            Type: "EGAME",
+            Type: "egame",
         },
 
         {
             Text: t("Fishing Game"),
-            Type: "FH",
+            Type: "fishing",
         },
         {
             Text: t("Thai Game"),
-            Type: "THAI",
+            Type: "thai",
             // Type: 'CHICKEN'
         },
 
@@ -212,6 +266,10 @@ export const Aside = () => {
         if (isMobileDevice()) dispatch(reverse());
     };
 
+    function isValueInArray(value) {
+        return IdWisePromotion?.games?.includes(value) || false;
+    }
+    
     return (
         <>
             <div className="z-[15]">
@@ -285,13 +343,17 @@ export const Aside = () => {
                             {/* Game List */}
                             {gameListLeft.map((item, index) => {
                                 return (
-                                    <SideIcon
-                                        text={item.Text}
-                                        type={item.Type}
-                                        index={index}
-                                        key={item.Text}
-                                        expand={expandMenuState}
-                                    />
+                                    <>
+                                        {(isValueInArray(item.Type) || !isLogin) ?
+                                            <SideIcon
+                                            text={item.Text}
+                                            type={item.Type}
+                                            index={index}
+                                            key={item.Text}
+                                            expand={expandMenuState}
+                                            />
+                                        : null}
+                                   </>
                                 );
                             })}
 

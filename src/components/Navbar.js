@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -52,13 +52,66 @@ import Others from "../assets/img/new_design/navbar/others.svg";
 import OthersActive from "../assets/img/new_design/navbar/others.svg";
 
 import Slide from "./Slide";
-
+import * as API from "../services/api";
 export default function NavBar() {
     const { t } = useTranslation();
     const navigate = useNavigate();
-
+    const [promotionItems, setPromotionItems] = useState(null);
+    const [IdWisePromotion, setIdWisePromotion] = useState(null);
+    const [userInfo, setUserInfo] = useState({});
+       
     const { gameType, platform } = useParams();
+    const isLogin = useSelector((state) => state.loginState.isLogin);
 
+    const getPromotions = useCallback(async () => {
+        try {
+            const res = await API.getAllPromotions(true);
+            if (res?.data?.promotionsList) {
+                setPromotionItems(res?.data?.promotionsList);
+            }
+        } catch (error) {
+            console.error("Error while fetching promotions:", error);
+        }
+    },[]);
+
+    useEffect(() => {
+
+        if(userInfo && userInfo?.promotionId && promotionItems && promotionItems.length){
+            try {
+                const filteredPromotions = promotionItems?.find(
+                    (promo) => promo._id === userInfo?.promotionId
+                );
+                setIdWisePromotion(filteredPromotions);
+            } catch (error) {
+                console.error("Error while fetching promotions:", error);
+            }
+        }
+    }, [userInfo,promotionItems,isLogin]);
+
+    useEffect(() => {
+        if(isLogin){
+            getUserInfo();
+        }
+    },[isLogin]);
+
+    const getUserInfo = useCallback(async () => {
+		const res = await API.getUserInfo();
+		if(res?.data) {
+			 setUserInfo(res.data);
+		}
+	}, [])
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await getPromotions();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchData();
+    }, []);
     const navIndex = useSelector((state) => state.navBarState.index);
     const dispatch = useDispatch();
 
@@ -70,6 +123,7 @@ export default function NavBar() {
             ActiveImg: LobbyActive,
             Text: t("Lobby"),
             Hover: home_hover,
+            type:"lobby"
         },
         {
             Img: Slots,
@@ -77,6 +131,7 @@ export default function NavBar() {
             Text: t("Slots"),
             Hover: home_hover,
             gameType: "SLOT",
+            type:"slot"
         },
         {
             Img: Others,
@@ -84,6 +139,7 @@ export default function NavBar() {
             Text: t("Live Casino"),
             Hover: home_hover,
             gameType: "LIVE",
+            type:"live"
         },
         {
             Img: Others,
@@ -91,6 +147,7 @@ export default function NavBar() {
             Text: t("Table Game"),
             Hover: home_hover,
             gameType: "TABLE",
+            type:"table"
         },
         {
             Img: Others,
@@ -98,6 +155,7 @@ export default function NavBar() {
             Text: t("Sports"),
             Hover: home_hover,
             gameType: "ESPORTS",
+            type:"sports"
         },
         {
             Img: Others,
@@ -105,6 +163,7 @@ export default function NavBar() {
             Text: t("EGame"),
             Hover: home_hover,
             gameType: "EGAME",
+            type:"egame"
         },
         // {
         //   Img: Thumbup,
@@ -120,6 +179,7 @@ export default function NavBar() {
             Text: t("Fishing Game"),
             Hover: home_hover,
             gameType: "FH",
+            type:"fishing"
         },
         {
             Img: Others,
@@ -127,6 +187,7 @@ export default function NavBar() {
             Text: t("Thai Game"),
             Hover: home_hover,
             gameType: "THAI",
+            type:"thai"
         },
 
         // {
@@ -188,6 +249,10 @@ export default function NavBar() {
         // },
     ];
 
+    function isValueInArray(value) {
+        return IdWisePromotion?.games?.includes(value) || false;
+    }
+
     // useEffect(() => {
     //     console.log(navIndex);
     //     if (!platform) {
@@ -204,40 +269,41 @@ export default function NavBar() {
             >
                 {gameListLeft.map((item, index) => (
                     <SwiperSlide key={index} className="!w-fit">
-                        <button
-                            key={index}
-                            onClick={() => {
-                                console.log(index);
-                                path =
-                                    index === 0
-                                        ? "/"
-                                        : `/${gameListLeft[index].gameType}`;
-                                dispatch(setNavBar({ index }));
-                                navigate(path, { replace: true });
-                            }}
-                            className={`${
-                                index === navIndex
-                                    ? "active !bg-[var(--logoutBg)] rounded-md h-[60px]"
-                                    : " mr-8 ml-8"
-                            } rounded-0 text-[16px] block h-[80px]  items-center justify-center  px-3 `}
-                        >
-                            <div className="flex justify-center mt-1">
-                            <img
-                                src={
-                                    index === navIndex
-                                        ? item.ActiveImg
-                                        : item.Img
-                                }
-                                alt="game show"
+                        {(isValueInArray(item.type) || !isLogin) ?
+                            <button
+                                key={index}
+                                onClick={() => {
+                                    console.log(index);
+                                    path =
+                                        index === 0
+                                            ? "/"
+                                            : `/${gameListLeft[index].gameType}`;
+                                    dispatch(setNavBar({ index }));
+                                    navigate(path, { replace: true });
+                                }}
                                 className={`${
                                     index === navIndex
-                                        ? "active !bg-black border-[var(--logout)] mb-1 rounded-xl p-[2px] shadow-lg"
-                                        : " bg-black rounded-xl p-[3px] shadow-lg nonhovers mb-2 "
-                                } w-[30px] md:w-[30px] h-auto`}
-                                
-                            />
-                            </div>
-                            <span
+                                        ? "active !bg-[var(--logoutBg)] rounded-md h-[60px]"
+                                        : " mr-8 ml-8"
+                                } rounded-0 text-[16px] block h-[80px]  items-center justify-center  px-3 `}
+                            >
+                                <div className="flex justify-center mt-1">
+                                <img
+                                    src={
+                                        index === navIndex
+                                            ? item.ActiveImg
+                                            : item.Img
+                                    }
+                                    alt="game show"
+                                    className={`${
+                                        index === navIndex
+                                            ? "active !bg-black border-[var(--logout)] mb-1 rounded-xl p-[2px] shadow-lg"
+                                            : " bg-black rounded-xl p-[3px] shadow-lg nonhovers mb-2 "
+                                    } w-[30px] md:w-[30px] h-auto`}
+                                    
+                                />
+                                </div>
+                                <span
                                 className={`${
                                     index === navIndex
                                         ? "text-black"
@@ -246,7 +312,8 @@ export default function NavBar() {
                             >
                                 {item.Text}
                             </span>
-                        </button>
+                            </button>
+                         : null}
                     </SwiperSlide>
                 ))}
             </Swiper>

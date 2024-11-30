@@ -100,7 +100,7 @@ export default function NavBar() {
 			 setUserInfo(res.data);
 		}
 	}, [])
-
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -123,7 +123,7 @@ export default function NavBar() {
             ActiveImg: LobbyActive,
             Text: t("Lobby"),
             Hover: home_hover,
-            type:"/"
+            type:"lobby"
         },
         {
             Img: Slots,

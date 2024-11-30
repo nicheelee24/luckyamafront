@@ -15,6 +15,11 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { useEffect, useState, useCallback } from "react";
 import * as API from "../services/api";
 import Login from "./signs/Login";
+import { useSelector } from "react-redux";
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
+import check_icon from "../assets/img/check.svg";
+import axios from "axios";
 // import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export const Banner = (props) => {
@@ -33,6 +38,9 @@ export const Banner = (props) => {
     const [open, setOpen] = useState(false);
     const [type, setType] = useState("");
     const [promotionId, setPromotionId] = useState("");
+    const [userInfo, setUserInfo] = useState({});
+	const [modalOpen, setModalOpen] = useState({isopen:false,message:'',header:''});
+    const isLogin = useSelector((state) => state.loginState.isLogin);
 
     const page = props.page || "dashboard";
 
@@ -62,13 +70,69 @@ export const Banner = (props) => {
     }, []);
 
     const signUp = (content) => {
-        if (content.isPromotion) {
+        if (content.isPromotion || !isLogin) {
             console.log("this is my promotion")
             setPromotionId(content._id);
             setType("login");
-            setOpen(true);
+            setOpen(!isLogin);
         }
     }
+    useEffect(() => {
+		// get all promotions
+		getPromotions();
+		isLogin && getUserInfo();
+	}, []);
+
+	const getUserInfo = useCallback(async () => {
+		const res = await API.getUserInfo();
+		if(res?.data) {
+			 setUserInfo(res.data);
+		}
+	}, [])
+
+    useEffect(() => {
+        getPromotions();
+        if (isLogin) {
+            getUserInfo();
+        } else {
+            setUserInfo({});
+        }
+    }, [isLogin]);
+
+	const handlePromotionCode = useCallback(async (promotion_id,user_id) => {
+		if (isLogin && promotion_id && user_id) {
+			savePromotionToUser(promotion_id,user_id);
+		} else {
+			setOpen(true);
+			setType("login");
+			setPromotionId(promotion_id)
+		}
+	}, [])
+
+	const savePromotionToUser = async (promotion_id,user_id) => {
+		const options = {
+			method: "POST",
+			url: process.env.REACT_APP_BACKEND + "/api/saveuserpromotion",
+			headers: { "content-type": "application/x-www-form-urlencoded" },
+			data: {
+				promotion_id: promotion_id,
+				user_id: user_id
+			},
+		};
+		await axios
+			.request(options)
+			.then(function (response) {
+				if (response.data.res == "sucess") {
+					setModalOpen({isopen:true,message:response.data.msg,header:'Sucess'});
+				} else if(response.data.res == "warning") {
+					setModalOpen({isopen:true,message:response.data.msg,header:'Warning'});
+				}
+			})
+			.catch(function (error) {
+				console.error(error);
+			});
+	}
+    const closeModal = () => setModalOpen({isopen:false,message:'',header:''});
 
     return page === "dashboard" ? (
         <div className="flex w-full bg-black">
@@ -136,11 +200,27 @@ export const Banner = (props) => {
                             {splideImages.map((imgURL, key) => {
                                 return (
                                     <SplideSlide key={key}>
-                                        <img
-                                            src={(imgURL.isPromotion) ? `https://bundaii.com/ama-bundai/uploads/${imgURL?.name}` : require(`../assets/img/banner/${imgURL.name}.jpg`)}
-                                            className="rounded-xl" style={{height:'200px',width:'475px'}}
-                                            onClick={() => signUp(imgURL)}
-                                        />
+                                        <div className="relative">
+                                            <img
+                                                src={(imgURL.isPromotion) ? `https://bundaii.com/ama-bundai/uploads/${imgURL?.name}` : require(`../assets/img/banner/${imgURL.name}.jpg`)}
+                                                className="rounded-xl" style={{height:'200px',width:'475px'}}
+                                                onClick={() => signUp(imgURL)}
+                                            />
+                                                <div  className="absolute lg:left-36 bottom-2">
+                                               
+                                                    {(userInfo?.promotionId === imgURL?.id && imgURL?.isPromotion) ?
+                                                        <p className='flex items-center justify-center mt-7 gap-2 text-[var(--logoutBg)]'><img src={check_icon} alt="eye icon" className='h-7 w-7'/>Current active promotion</p>
+                                                        : (userInfo?.promotionId !== imgURL?.id && imgURL?.isPromotion) 
+                                                        ?
+                                                        <div className='flex items-center justify-center '>
+                                                            <button className="bg-[var(--logoutBg)] text-black mt-2 font-bold py-2 px-4 rounded" onClick={()=>handlePromotionCode(imgURL?.id,userInfo._id)}>
+                                                                Apply this promotion
+                                                            </button>
+                                                        </div>
+                                                         :
+                                                         null}
+                                               </div>
+                                        </div>
                                     </SplideSlide>
                                 );
                             })}
@@ -158,13 +238,63 @@ export const Banner = (props) => {
           <img src={PokerImg} alt="cryptoImage" className="w-full md:w-[22%]"   />
           <img src={SportsGameImg} alt="cryptoImage" className="w-full md:w-[22%]"   />
       </div> */}
+      		<Transition appear show={modalOpen?.isopen} as={Fragment}>
+                <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                    <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <div className="fixed inset-0 bg-black bg-opacity-25" />
+                    </Transition.Child>
 
-       <Login
-                open={open}
-                setOpen={setOpen}
-                type={type}
-                setType={setType}
-            />
+                    <div className="fixed inset-0 flex items-center justify-center p-4">
+                        <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0 scale-95"
+                        enterTo="opacity-100 scale-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100 scale-100"
+                        leaveTo="opacity-0 scale-95"
+                        >
+                        <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-center shadow-xl transition-all">
+                            <Dialog.Title
+                            as="h3"
+                            className="text-lg font-medium leading-6 text-gray-900"
+                            >
+                            {modalOpen?.header}
+                            </Dialog.Title>
+                            <div className="mt-4">
+                            <p className="text-sm text-gray-500">
+                            {modalOpen?.message}
+                            </p>
+                            </div>
+                            <div className="mt-6">
+                            <button
+                                className="px-4 py-2 bg-[var(--logoutBg)] text-black rounded hover:bg-red-700"
+                                onClick={closeModal}
+                            >
+                                Close
+                            </button>
+                            </div>
+                        </Dialog.Panel>
+                        </Transition.Child>
+                    </div>
+			    </Dialog>
+            </Transition>
+        {!isLogin && 
+        <Login
+           open={open}
+           setOpen={setOpen}
+           type={type}
+           setType={setType}
+        />}
+       
         </>
     );
 };

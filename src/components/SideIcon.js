@@ -25,7 +25,7 @@ export const SideIcon = ({ text, type, index, expand }) => {
     const navigate = useNavigate();
     const navIndex = useSelector((state) => state.navBarState.index);
     const [isHover, setIsHover] = useState(false);
-
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -196,7 +196,7 @@ export const SideIcon = ({ text, type, index, expand }) => {
 
     function handleClick(type, index) {
         switch (type) {
-            case "ALL":
+            case "lobby":
                 dispatch(setNavBar({ index: 0 }));
                 navigate(`/`, { replace: true });
                 window.scrollTo({ top: 0, left: 0, behavior: "smooth" });

@@ -73,56 +73,56 @@ export const GetIcon = ({ type, active }) => {
 
     useEffect(() => {
         switch (type) {
-            case "ALL":
+            case "lobby":
                 if (active) {
                     setIcon(lobbyHome_hover);
                 } else {
                     setIcon(lobbyHome);
                 }
                 break;
-            case "ESPORTS":
+            case "sports":
                 if (active) {
                     setIcon(sportsBasketball_hover);
                 } else {
                     setIcon(sportsBasketball);
                 }
                 break;
-            case "EGAME":
+            case "egame":
                 if (active) {
                     setIcon(casino_hover);
                 } else {
                     setIcon(casino);
                 }
                 break;
-            case "SLOT":
+            case "slot":
                 if (active) {
                     setIcon(newslots_hover);
                 } else {
                     setIcon(newslots);
                 }
                 break;
-            case "FH":
+            case "fishing":
                 if (active) {
                     setIcon(fishing_hover);
                 } else {
                     setIcon(fishing);
                 }
                 break;
-            case "THAI":
+            case "thai":
                 if (active) {
                     setIcon(thai_hover);
                 } else {
                     setIcon(thai);
                 }
                 break;
-            case "TABLE":
+            case "table":
                 if (active) {
                     setIcon(tableGame_hover);
                 } else {
                     setIcon(tableGame);
                 }
                 break;
-            case "LIVE":
+            case "live":
                 if (active) {
                     setIcon(casino);
                 } else {
@@ -218,5 +218,5 @@ export const GetIcon = ({ type, active }) => {
         }
     }, [active]);
 
-    return <img src={icon} alt={icon} className="w-[22px]" />;
+    return <img src={icon} alt={icon} className="w-[22px] bg-black rounded" />;
 };

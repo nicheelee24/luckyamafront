@@ -209,7 +209,7 @@ export const Banner = (props) => {
                                                 <div  className="absolute lg:left-36 bottom-2">
                                                
                                                     {(userInfo?.promotionId === imgURL?.id && imgURL?.isPromotion) ?
-                                                        <p className='flex items-center justify-center mt-7 gap-2 text-[var(--logoutBg)]'><img src={check_icon} alt="eye icon" className='h-7 w-7'/>Current active promotion</p>
+                                                        <p className='flex items-center justify-center mt-7 gap-2 text-[var(--logoutBg)] bg-black mt-2 font-bold py-2 px-4 rounded'><img src={check_icon} alt="eye icon" className='h-5 w-5'/>Current active promotion</p>
                                                         : (userInfo?.promotionId !== imgURL?.id && imgURL?.isPromotion) 
                                                         ?
                                                         <div className='flex items-center justify-center '>

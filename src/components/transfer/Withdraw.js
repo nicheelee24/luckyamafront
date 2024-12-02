@@ -69,7 +69,7 @@ export default function Withdraw({ open, setOpen, type, setType }) {
             .then(function (response) {
                 let resp = response.data;
                 console.log("responseee" + resp.code)
-                if (resp.code == '0') {
+              
 
                    // window.open(resp.payUrl, "_blank");
                    toast.error("API Response Code: " + resp.code + "-" + resp.message, {
@@ -82,58 +82,11 @@ export default function Withdraw({ open, setOpen, type, setType }) {
                     progress: undefined,
                     theme: "light",
                 });
-                } 
-                else if (resp.code == '203') {
-                    toast.error("API Response Code: " + resp.code + "-" + resp.message, {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                }
-                else if (resp.code == '401') {
-                    toast.error("API Response Code: " + resp.code + "-" + resp.message, {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                }
-                else if (resp.code == '408') {
-                   
-                    toast.error("API Response Code: " + resp.code + "-" + resp.msg, {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
                 
-                }
-                else
-                {
-                    toast.error("API Response Code: " + resp.code + "-" + resp.msg, {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                }
+                
+                
+                
+                
                 console.log(resp);
             })
             .catch(function (err) {

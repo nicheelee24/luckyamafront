@@ -71,7 +71,17 @@ export default function Withdraw({ open, setOpen, type, setType }) {
                 console.log("responseee" + resp.code)
                 if (resp.code == '0') {
 
-                    window.open(resp.payUrl, "_blank");
+                   // window.open(resp.payUrl, "_blank");
+                   toast.error("API Response Code: " + resp.code + "-" + resp.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
                 } 
                 else if (resp.code == '203') {
                     toast.error("API Response Code: " + resp.code + "-" + resp.message, {
@@ -85,7 +95,7 @@ export default function Withdraw({ open, setOpen, type, setType }) {
                         theme: "light",
                     });
                 }
-                else if (resp.code == '-2') {
+                else if (resp.code == '401') {
                     toast.error("API Response Code: " + resp.code + "-" + resp.message, {
                         position: "top-right",
                         autoClose: 5000,
@@ -97,10 +107,9 @@ export default function Withdraw({ open, setOpen, type, setType }) {
                         theme: "light",
                     });
                 }
-                else if (resp.code == '-1') {
-                    if(resp.msg.indexOf("交易金额小于最小金额")!=-1)
-                    {
-                    toast.error("API Response Code: " + resp.code + "-" + resp.msg+".The transaction amount is less than the minimum amount of 500.00", {
+                else if (resp.code == '408') {
+                   
+                    toast.error("API Response Code: " + resp.code + "-" + resp.msg, {
                         position: "top-right",
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -110,7 +119,20 @@ export default function Withdraw({ open, setOpen, type, setType }) {
                         progress: undefined,
                         theme: "light",
                     });
+                
                 }
+                else
+                {
+                    toast.error("API Response Code: " + resp.code + "-" + resp.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
                 }
                 console.log(resp);
             })

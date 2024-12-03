@@ -72,7 +72,7 @@ export default function Withdraw({ open, setOpen, type, setType }) {
               
 
                    // window.open(resp.payUrl, "_blank");
-                   toast.error("API Response Code: " + resp.code + "-" + resp.message, {
+                   toast.info(resp.code + "-" + resp.message, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,

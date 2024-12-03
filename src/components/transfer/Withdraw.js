@@ -68,20 +68,40 @@ export default function Withdraw({ open, setOpen, type, setType }) {
             )
             .then(function (response) {
                 let resp = response.data;
+                let msg='Withdraw Successful';
                 console.log("responseee" + resp.code)
               
 
                    // window.open(resp.payUrl, "_blank");
-                   toast.info(resp.code + "-" + resp.message, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
+if(resp.code==0)
+{
+    toast.success(msg, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
 
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+    window.location.reload(false); 
+}
+else
+{
+    toast.error(resp.code + "-" + resp.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+    window.location.reload(false); 
+}
+                  
                 
                 
                 

@@ -77,7 +77,7 @@ if(resp.code==0)
 {
     toast.success(msg, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 8000,
         hideProgressBar: false,
         closeOnClick: false,
 
@@ -91,7 +91,7 @@ else
 {
     toast.error(resp.code + "-" + resp.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 8000,
         hideProgressBar: false,
         closeOnClick: true,
 

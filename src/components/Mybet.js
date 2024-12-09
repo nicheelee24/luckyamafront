@@ -39,8 +39,9 @@ export const MyBet = () => {
             await axios
                 .request(options)
                 .then(function (response) {
-                    console.log("my bets data.."+response.data[0].gameName);
-                    setMybets(response.data);
+                //  console.log("my bets data.."+response.data.gameName);
+                    setMybets(response.data.myBets);
+                    console.log(mybets);
                     setLoading(false);
                 })
                 .catch(function (error) {
@@ -60,7 +61,9 @@ export const MyBet = () => {
     // Pagination logic
     const indexOfLastBet = currentPage * betsPerPage;
     const indexOfFirstBet = indexOfLastBet - betsPerPage;
-    const currentBets = mybets.slice(indexOfFirstBet, indexOfLastBet);
+    
+    //const currentBets = mybets.slice(indexOfFirstBet, indexOfLastBet);
+    const currentBets =Array.isArray(mybets) ? mybets.slice( indexOfFirstBet, indexOfLastBet ) : [];
 
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(mybets.length / betsPerPage); i++) {
@@ -96,7 +99,7 @@ export const MyBet = () => {
                         <option value="VIRTUAL">VIRTUAL</option>
                     </select>
 
-                    <button className="bg-[var(--logoutBg)] hover:bg-black text-white font-bold py-3 px-4 rounded">
+                    <button className="bg-[var(--logoutBg)] hover:bg-black text-white font-bold py-3 px-4 rounded" onClick={fetchMyBets}>
                         Refresh
                     </button>
                 </div>
@@ -125,7 +128,8 @@ export const MyBet = () => {
                             </thead>
                             <tbody>
                                 {currentBets.length > 0 ? (
-                                    currentBets.map((bet, index) => (
+                                    <>
+                                    {currentBets.map((bet, index) => (
                                         <tr className="text-white border-b border-[var(--logoutBg)]">
                                             <th
                                                 scope="row"
@@ -156,7 +160,7 @@ export const MyBet = () => {
                                             </td>
                                         </tr>
                                     ))
-                                ) : (
+ } </>) : (
                                     <tr className="text-white border-b border-[var(--logoutBg)]">
                                         <td
                                             colSpan={8}

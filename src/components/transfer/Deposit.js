@@ -67,7 +67,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
             )
             .then(function (response) {
                 let resp = response.data;
-                console.log(resp);
+                //console.log(resp);
                 if(resp.code=='0')
                 {
                // window.open(resp.payUrl, "_blank");
@@ -75,9 +75,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
                 }
                 else
                 {
-                    if(resp.msg=='>无银行卡可用')
-                    {
-                        toast.warning("API Response Code: "+resp.code+"-"+resp.msg+".(No bank card available)", {
+                   
+                        toast.warning("API Response Code: "+resp.code+"-"+resp.msg, {
                             position: "top-right",
                             autoClose: 10000,
                             hideProgressBar: false,
@@ -88,19 +87,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
                         });
                       //  window.location.reload();
 
-                    }
-                    else
-                    {
-                        toast.warning("API Response Code: "+resp.code+"-"+resp.msg+". Please try again later.", {
-                            position: "top-right",
-                            autoClose: 10000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                        });
-                    }
+                    
+                  
                    
                    
                    

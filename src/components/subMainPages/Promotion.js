@@ -75,8 +75,10 @@ export const Promotion = () => {
 			.then(function (response) {
 				if (response.data.res == "sucess") {
 					setModalOpen({isopen:true,message:response.data.msg,header:'Sucess'});
+					window.location.reload(false);
 				} else if(response.data.res == "warning") {
 					setModalOpen({isopen:true,message:response.data.msg,header:'Warning'});
+					window.location.reload(false);
 				}
 			})
 			.catch(function (error) {

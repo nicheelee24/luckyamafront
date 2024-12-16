@@ -52,7 +52,7 @@ export default function RegisterEmail({ open, setOpen, type, setType }) {
 
     const bankLists = [
         "KBANK",
-        "SCB",
+        "SCBB",
         "BBL",
         "KTB",
         "TTB",
@@ -436,29 +436,7 @@ export default function RegisterEmail({ open, setOpen, type, setType }) {
                                                 ))}
                                             </select>
                                         </div>
-                                        <div className="input-wrapper mt-5">
-                                            <label htmlFor="bbn" className="!text-black font-semibold">
-                                                {t("Promotion")}
-                                            </label>
-                                            <select
-                                                value={bbn}
-                                                onChange={handleBBNChange}
-                                                ref={bbnRef}
-                                                id="bbn"
-                                                className="rounded-lg px-6 mt-3"
-                                                autoFocus
-                                            >
-                                                {/* <option value="" disabled>{t("Select Bank")}</option> */}
-                                                {bankLists.map((bank) => (
-                                                    <option
-                                                        key={bank}
-                                                        value={bank}
-                                                    >
-                                                        {t(bank)}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
+                                      
 
                                         <div className="hidden agreement flex items-center">
                                             <h1 className="mr-2 !text-black font-semibold">

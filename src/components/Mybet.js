@@ -16,6 +16,7 @@ export const MyBet = () => {
     };
 
     useEffect(() => {
+       
         fetchMyBets();
     }, [selectedGame, currentPage]);
 

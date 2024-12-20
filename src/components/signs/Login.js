@@ -156,7 +156,7 @@ export default function Login({ open, setOpen, type, setType }) {
                     // response.data.sbo_login_url
                     toast.success("Log In Successfully.", {
                         position: "top-right",
-                        autoClose: 5000,
+                        autoClose: 3000,
                         hideProgressBar: false,
                         closeOnClick: true,
 
@@ -165,10 +165,24 @@ export default function Login({ open, setOpen, type, setType }) {
                         theme: "light",
                     });
                     // window.location.href = response.data.login_url;
-                } else {
-                    toast.error("Log In Failed: " + response.data.desc, {
+                } 
+                
+                else if(response.data.status === "300") {
+                    toast.error("Alert! " + response.data.desc, {
                         position: "top-right",
                         autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                }
+                else {
+                    toast.info("Log In Failed: " + response.data.desc, {
+                        position: "top-right",
+                        autoClose: 4000,
                         hideProgressBar: false,
                         closeOnClick: true,
 

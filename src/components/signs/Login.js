@@ -148,7 +148,7 @@ export default function Login({ open, setOpen, type, setType }) {
             .request(options)
             .then(function (response) {
                 console.log("responseeeeeeeeeeeeee login ----"+response.data)
-                if (response.data.status == "0000") {
+                if (response.data.status === "0000") {
                     window.localStorage.setItem("token", response.data.token);
                     API.setAuthToken(response.data.token);
                     setOpen(false);
@@ -167,31 +167,7 @@ export default function Login({ open, setOpen, type, setType }) {
                     // window.location.href = response.data.login_url;
                 } 
                 
-                else if(response.data.status == "300") {
-                    toast.error("Alert! " + response.data.msg, {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                }
-                else if(response.data.status == "301") {
-                    toast.error("Alert! " + response.data.msg, {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                }
-                else if(response.data.status == "302") {
+                else if(response.data.status === "300") {
                     toast.error("Alert! " + response.data.msg, {
                         position: "top-right",
                         autoClose: 5000,
@@ -204,7 +180,7 @@ export default function Login({ open, setOpen, type, setType }) {
                     });
                 }
                 else {
-                    toast.info("Some error occurred while login ", {
+                    toast.info("Log In Failed: " + response.data.msg, {
                         position: "top-right",
                         autoClose: 4000,
                         hideProgressBar: false,

@@ -168,7 +168,7 @@ export default function Login({ open, setOpen, type, setType }) {
                 } 
                 
                 else if(response.data.status === "300") {
-                    toast.error("Alert! " + response.data.desc, {
+                    toast.error("Alert! " + response.data.msg, {
                         position: "top-right",
                         autoClose: 5000,
                         hideProgressBar: false,

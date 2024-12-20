@@ -80,7 +80,7 @@ export const Header = () => {
         if (isLogin) {
             fetchBalance();
         }
-    }, [isLogin]);
+    }, [isLogin,fetchBalance]);
 
     const validEmails = useMemo(
         () => [

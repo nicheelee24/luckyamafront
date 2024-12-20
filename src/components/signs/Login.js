@@ -179,8 +179,32 @@ export default function Login({ open, setOpen, type, setType }) {
                         theme: "light",
                     });
                 }
+                else if(response.data.status === "301") {
+                    toast.error("Alert! " + response.data.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                }
+                else if(response.data.status === "302") {
+                    toast.error("Alert! " + response.data.msg, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                }
                 else {
-                    toast.info("Log In Failed: " + response.data.desc, {
+                    toast.info("Some error occurred while login ", {
                         position: "top-right",
                         autoClose: 4000,
                         hideProgressBar: false,

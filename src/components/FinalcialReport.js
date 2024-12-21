@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export const FinancialReport = () => {
-    const currentDate = new Date().toISOString().split("T")[0];
-
-    const [fromDate, setFromDate] = useState(currentDate);
-    const [toDate, setToDate] = useState(currentDate);
+    const currentDate = new Date();
+    currentDate.setDate(date.getDate() + 10);
+    const startDate=currentDate.toISOString().split("T")[0];
+    const endDate = new Date().toISOString().split("T")[0];
+    const [fromDate, setFromDate] = useState(startDate);
+    const [toDate, setToDate] = useState(endDate);
     const [tableDatas, setTableDatas] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);

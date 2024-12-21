@@ -13,6 +13,7 @@ export const FinancialReport = () => {
 
     useEffect(() => {
         console.log(fromDate, toDate);
+        handleGoClick();
     }, [fromDate, toDate]);
 
     const handleDateChange = (e, where) => {

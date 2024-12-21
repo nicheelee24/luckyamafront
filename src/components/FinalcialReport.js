@@ -3,8 +3,8 @@ import axios from "axios";
 
 export const FinancialReport = () => {
     const currentDate = new Date();
-    const today=currentDate.setDate(currentDate.getDate() + 10);
-    const startDate=today.toISOString().split("T")[0];
+    currentDate.setDate(currentDate.getDate() + 10);
+    const startDate=currentDate.toISOString().split("T")[0];
     const endDate = new Date().toISOString().split("T")[0];
     const [fromDate, setFromDate] = useState(startDate);
     const [toDate, setToDate] = useState(endDate);

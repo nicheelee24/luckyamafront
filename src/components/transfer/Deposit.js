@@ -32,15 +32,52 @@ export default function Deposit({ open, setOpen, type, setType }) {
     // const { socket, socketConnected } = useSocket();
 
     const dispatch = useDispatch();
-
+    const [checkState, setCheckState] = useState(null)
     const [amount, setAmount] = useState(100);
+    const [bbn, setBbn] = useState("");
+    const [paymethod, setPayMethod] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(false);
     const cancelButtonRef = useRef(null);
     const amountRef = useRef(null);
+    const bbnRef = useRef(null);
+    const payMethodRef = useRef(null);
+    const payMethods=[
+        "QR Prompt Pay",
+        "Bank"
+    ];
+    const bankLists = [
+        "KBANK",
+        "SCBB",
+        "BBL",
+        "KTBA",
+        "TTB",
+        "CITI",
+        "SCBT",
+        "CIMB",
+        "UOBT",
+        "BAY",
+        "GOV",
+        "GHB",
+        "BAAC",
+        "BOCM",
+        "ISBT",
+        "KK",
+        "ICBC",
+        "LHBANK",
+    ];
 
     const handleAmountChange = (e) => {
         const amount = e.target.value;
         setAmount(amount);
+    };
+    const handleBBNChange = (e) => {
+        const bbn = e.target.value;
+        setBbn(bbn);
+    };
+    const handlePayMethodChange = (e) => {
+        setCheckState(!checkState);
+        const paymethod = e.target.value;
+        setPayMethod(paymethod);
     };
 
     const handleDepositClick = async (e) => {
@@ -54,12 +91,22 @@ export default function Deposit({ open, setOpen, type, setType }) {
             },
         };
         //const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay/promptpay";//deposit_bigpay
-        const url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay";
+        let url='';
+        var paymeth=payMethodRef.current.value;
+        if(paymeth!='Bank')
+        {
+         url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
+        }
+        else
+        {
+            url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
+        }
         await axios
             .post(
                 url,
                 {
                     amount: amountRef.current.value,
+                    bbn:bbnRef.current.value,
                     currency: "baht",
                     platform: process.env.REACT_APP_PLATFORM,
                 },
@@ -257,36 +304,53 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                         <h1 className="mb-12  !text-xl md:text-2xl text-black font-bold">
                                             {t("Deposit")}
                                         </h1>
-                                        <div className="checkbox-wrapper flex items-center">
-                                                                                        <div className="m-0 p-0">
-                                                                                            <input
-                                                                                                type="checkbox"
-                                                                                                id="qr-method"
-                                                                                                
-                                                                                                
-                                                                                                
-                                                                                            />
-                                                                                            <label
-                                                                                                htmlFor="qr-method"
-                                                                                                className="cursor-pointer w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#c7c8cf]"
-                                                                                            >
-                                                                                                <span
-                                                                                                    className={clsx(
-                                                                                                        "w-3 h-3 rounded-full block",
-                                                                                                        isRemember
-                                                                                                            ? "bg-[#c7c8cf]"
-                                                                                                            : ""
-                                                                                                    )}
-                                                                                                ></span>
-                                                                                            </label>
-                                                                                        </div>
-                                                                                        <label
-                                                                                            htmlFor="qr-method"
-                                                                                            className="ml-1"
-                                                                                        >
-                                                                                            {t("QR Pay")}
-                                                                                        </label>
-                                                                                    </div>
+                                        <div className="input-wrapper mt-5">
+                                            <label htmlFor="paymethod" className="!text-black font-semibold">
+                                                {t("Select Payment Method")}
+                                            </label>
+                                            <select 
+                                            checked={checkState}
+                                                value={paymethod}
+                                                onChange={handlePayMethodChange}
+                                                ref={payMethodRef}
+                                                id="paymethod"
+                                                className="rounded-lg px-6 mt-3"
+                                                autoFocus
+                                            >
+                                                {/* <option value="" disabled>{t("Select Bank")}</option> */}
+                                                {payMethods.map((paym) => (
+                                                    <option
+                                                        key={paym}
+                                                        value={paym}
+                                                    >
+                                                        {t(paym)}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                      { checkState && <div className="input-wrapper mt-5">
+                                            <label htmlFor="bbn" className="!text-black font-semibold">
+                                                {t("Select Bank")}
+                                            </label>
+                                            <select
+                                                value={bbn}
+                                                onChange={handleBBNChange}
+                                                ref={bbnRef}
+                                                id="bbn"
+                                                className="rounded-lg px-6 mt-3"
+                                                autoFocus
+                                            >
+                                                {/* <option value="" disabled>{t("Select Bank")}</option> */}
+                                                {bankLists.map((bank) => (
+                                                    <option
+                                                        key={bank}
+                                                        value={bank}
+                                                    >
+                                                        {t(bank)}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div> }<br/>
                                         <div className="input-wrapper">
                                             <label htmlFor="amount"  className="text-black font-bold">
                                                 {t("Amount")}

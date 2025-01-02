@@ -261,13 +261,13 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                                                         <div className="m-0 p-0">
                                                                                             <input
                                                                                                 type="checkbox"
-                                                                                                id="remember-me"
-                                                                                                className="hidden"
+                                                                                                id="qr-method"
+                                                                                                
                                                                                                 
                                                                                                 
                                                                                             />
                                                                                             <label
-                                                                                                htmlFor="remember-me"
+                                                                                                htmlFor="qr-method"
                                                                                                 className="cursor-pointer w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#c7c8cf]"
                                                                                             >
                                                                                                 <span
@@ -281,7 +281,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                                                             </label>
                                                                                         </div>
                                                                                         <label
-                                                                                            htmlFor="remember-me"
+                                                                                            htmlFor="qr-method"
                                                                                             className="ml-1"
                                                                                         >
                                                                                             {t("QR Pay")}

@@ -109,7 +109,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                 url,
                 {
                     amount: amountRef.current.value,
-                    bbn: bbnRef.current.value,
+                   // bbn: bbnRef.current.value,
                     currency: "baht",
                     platform: process.env.REACT_APP_PLATFORM,
                 },

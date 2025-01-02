@@ -32,7 +32,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
     // const { socket, socketConnected } = useSocket();
 
     const dispatch = useDispatch();
-    const [checkState, setCheckState] = useState(true)
+    const [checkState, setCheckState] = useState(null)
     const [amount, setAmount] = useState(100);
     const [bbn, setBbn] = useState("");
     const [paymethod, setPayMethod] = useState("");
@@ -320,7 +320,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 className="rounded-lg px-6 mt-3"
                                                 autoFocus
                                             >
-                                                <option value="">{t("Select Payment Method")}</option>
+                                                {/* <option value="">{t("Select Payment Method")}</option> */}
                                                 {payMethods.map((paym) => (
                                                     <option
                                                         key={paym}

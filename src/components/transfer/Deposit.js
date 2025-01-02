@@ -32,7 +32,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
     // const { socket, socketConnected } = useSocket();
 
     const dispatch = useDispatch();
-    const [checkState, setCheckState] = useState(null)
+    const [checkState, setCheckState] = useState(true)
     const [amount, setAmount] = useState(100);
     const [bbn, setBbn] = useState("");
     const [paymethod, setPayMethod] = useState("");

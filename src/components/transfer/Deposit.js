@@ -93,6 +93,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
         //const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay/promptpay";//deposit_bigpay
         let url='';
         var paymeth=payMethodRef.current.value;
+        if(paymeth!='')
+        {
         if(paymeth!='Bank')
         {
          url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
@@ -100,7 +102,35 @@ export default function Deposit({ open, setOpen, type, setType }) {
         else
         {
             url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
+            if(bbnRef.current.value=='')
+                {
+                    toast.error("Please select bank", {
+                        position: "top-right",
+                        autoClose: 4000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    return;
+                }
         }
+    }
+    else
+    {
+        toast.error("Please select payment method", {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+        return;
+    }
+    
         await axios
             .post(
                 url,
@@ -306,7 +336,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                         </h1>
                                         <div className="input-wrapper mt-5">
                                             <label htmlFor="paymethod" className="!text-black font-semibold">
-                                                {t("Select Payment Method")}
+                                                {t("Payment Method")}
                                             </label>
                                             <select 
                                             checked={checkState}
@@ -317,7 +347,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 className="rounded-lg px-6 mt-3"
                                                 autoFocus
                                             >
-                                                {/* <option value="" disabled>{t("Select Bank")}</option> */}
+                                                <option value="">{t("Select Payment Method")}</option>
                                                 {payMethods.map((paym) => (
                                                     <option
                                                         key={paym}
@@ -330,7 +360,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                         </div>
                                       { !checkState && <div className="input-wrapper mt-5">
                                             <label htmlFor="bbn" className="!text-black font-semibold">
-                                                {t("Select Bank")}
+                                                {t("Bank Name")}
                                             </label>
                                             <select
                                                 value={bbn}
@@ -340,7 +370,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 className="rounded-lg px-6 mt-3"
                                                 autoFocus
                                             >
-                                                {/* <option value="" disabled>{t("Select Bank")}</option> */}
+                                                <option value="">{t("Select Bank")}</option>
                                                 {bankLists.map((bank) => (
                                                     <option
                                                         key={bank}

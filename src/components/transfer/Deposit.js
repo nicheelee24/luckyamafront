@@ -32,7 +32,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
     // const { socket, socketConnected } = useSocket();
 
     const dispatch = useDispatch();
-    const [checkState, setCheckState] = useState(true)
+    const [checkState, setCheckState] = useState(false)
     const [amount, setAmount] = useState(100);
     const [bbn, setBbn] = useState("");
     const [paymethod, setPayMethod] = useState("");
@@ -75,7 +75,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
         setBbn(bbn);
     };
     const handlePayMethodChange = (e) => {
-        setCheckState(!checkState);
+        setCheckState(checkState);
         const paymethod = e.target.value;
         setPayMethod(paymethod);
     };
@@ -328,7 +328,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 ))}
                                             </select>
                                         </div>
-                                      { checkState && <div className="input-wrapper mt-5">
+                                      { !checkState && <div className="input-wrapper mt-5">
                                             <label htmlFor="bbn" className="!text-black font-semibold">
                                                 {t("Select Bank")}
                                             </label>

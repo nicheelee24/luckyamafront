@@ -75,7 +75,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
         setBbn(bbn);
     };
     const handlePayMethodChange = (e) => {
-        setCheckState(checkState);
+        setCheckState(!checkState);
         const paymethod = e.target.value;
         setPayMethod(paymethod);
     };
@@ -93,8 +93,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
         //const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay/promptpay";//deposit_bigpay
         let url='';
         var paymeth=payMethodRef.current.value;
-        if(paymeth!='')
-        {
+       
         if(paymeth!='Bank')
         {
          url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
@@ -103,20 +102,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
         {
             url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
         }
-    }
-    else
-    {
-        toast.warning("Please select payment method", {
-            position: "top-right",
-            autoClose: 4000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-        return;
-    }
+    
+   
         await axios
             .post(
                 url,

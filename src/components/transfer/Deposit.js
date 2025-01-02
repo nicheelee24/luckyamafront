@@ -113,7 +113,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                         progress: undefined,
                         theme: "light",
                     });
-                    return;
+                    
                 }
         }
     }
@@ -128,7 +128,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
             progress: undefined,
             theme: "light",
         });
-        return;
+        
     }
     
         await axios

@@ -102,24 +102,11 @@ export default function Deposit({ open, setOpen, type, setType }) {
         else
         {
             url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
-            if(bbnRef.current.value=='')
-                {
-                    toast.error("Please select bank", {
-                        position: "top-right",
-                        autoClose: 4000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                    });
-                    
-                }
         }
     }
     else
     {
-        toast.error("Please select payment method", {
+        toast.warning("Please select payment method", {
             position: "top-right",
             autoClose: 4000,
             hideProgressBar: false,
@@ -128,9 +115,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
             progress: undefined,
             theme: "light",
         });
-        
+        return;
     }
-    
         await axios
             .post(
                 url,

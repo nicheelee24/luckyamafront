@@ -257,6 +257,36 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                         <h1 className="mb-12  !text-xl md:text-2xl text-black font-bold">
                                             {t("Deposit")}
                                         </h1>
+                                        <div className="checkbox-wrapper flex items-center">
+                                                                                        <div className="m-0 p-0">
+                                                                                            <input
+                                                                                                type="checkbox"
+                                                                                                id="remember-me"
+                                                                                                className="hidden"
+                                                                                                
+                                                                                                
+                                                                                            />
+                                                                                            <label
+                                                                                                htmlFor="remember-me"
+                                                                                                className="cursor-pointer w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#c7c8cf]"
+                                                                                            >
+                                                                                                <span
+                                                                                                    className={clsx(
+                                                                                                        "w-3 h-3 rounded-full block",
+                                                                                                        isRemember
+                                                                                                            ? "bg-[#c7c8cf]"
+                                                                                                            : ""
+                                                                                                    )}
+                                                                                                ></span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <label
+                                                                                            htmlFor="remember-me"
+                                                                                            className="ml-1"
+                                                                                        >
+                                                                                            {t("Remember me")}
+                                                                                        </label>
+                                                                                    </div>
                                         <div className="input-wrapper">
                                             <label htmlFor="amount"  className="text-black font-bold">
                                                 {t("Amount")}

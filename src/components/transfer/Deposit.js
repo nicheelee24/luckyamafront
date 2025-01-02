@@ -284,7 +284,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                                                             htmlFor="remember-me"
                                                                                             className="ml-1"
                                                                                         >
-                                                                                            {t("Remember me")}
+                                                                                            {t("QR Pay")}
                                                                                         </label>
                                                                                     </div>
                                         <div className="input-wrapper">

@@ -34,8 +34,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
     const dispatch = useDispatch();
     const [checkState, setCheckState] = useState(null)
     const [amount, setAmount] = useState(100);
-    const [bbn, setBbn] = useState("KBANK");
-    const [paymethod, setPayMethod] = useState("Bank");
+    const [bbn, setBbn] = useState("");
+    const [paymethod, setPayMethod] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(false);
     const cancelButtonRef = useRef(null);
     const amountRef = useRef(null);

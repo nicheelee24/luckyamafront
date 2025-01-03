@@ -23,6 +23,7 @@ import whatsapp_icon from "../../assets/img/whatsapp_sign.svg";
 
 import * as API from "../../services/api";
 import TransactionHistory from "./TransactionHistory";
+import { redirect } from "react-router-dom";
 
 // import useSocket from '../../hooks/useSocket';
 
@@ -113,7 +114,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
                 if(resp.code=='0')
                 {
                // window.open(resp.payUrl, "_blank");
-               window.open(resp.PayUrl,"_self");
+               let redirectt=resp.PayUrl.split("=");
+               window.open(redirectt[1],"_self");
                 }
                 else
                 {

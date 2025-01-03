@@ -92,8 +92,10 @@ export default function Deposit({ open, setOpen, type, setType }) {
         };
         //const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay/promptpay";//deposit_bigpay
         let url='';
-        var paymeth=payMethodRef.current.value;//
-        let data=[];//
+        var paymeth=payMethodRef.current.value;
+        var currency;
+        var platform;
+       let data=[];
         if(paymeth!='Bank')
         {
          url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
@@ -101,7 +103,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
             amount=amountRef.current.value,
             currency="baht",
             platform=process.env.REACT_APP_PLATFORM
-         ];
+         ]
         }
         else
         {
@@ -111,8 +113,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                 bbn=bbnRef.current.value,
                 currency="baht",
                 platform=process.env.REACT_APP_PLATFORM
-             ];
-           
+             ]
         }
     
    
@@ -124,7 +125,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
             )
             .then(function (response) {
                 let resp = response.data;
-                console.log(resp);
+                //console.log(resp);
                 if(resp.code=='0')
                 {
                // window.open(resp.payUrl, "_blank");

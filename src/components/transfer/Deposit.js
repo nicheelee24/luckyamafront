@@ -46,24 +46,10 @@ export default function Deposit({ open, setOpen, type, setType }) {
         "Bank"
     ];
     const bankLists = [
-        "KBANK",
-        "SCBB",
-        "BBL",
-        "KTBA",
-        "TTB",
-        "CITI",
-        "SCBT",
-        "CIMB",
-        "UOBT",
-        "BAY",
-        "GOV",
-        "GHB",
-        "BAAC",
-        "BOCM",
-        "ISBT",
-        "KK",
-        "ICBC",
-        "LHBANK",
+        "BKKB",
+        "KSKB",
+        "KSAB",
+             
     ];
 
     const handleAmountChange = (e) => {

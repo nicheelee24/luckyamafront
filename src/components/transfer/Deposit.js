@@ -110,13 +110,21 @@ export default function Deposit({ open, setOpen, type, setType }) {
             )
             .then(function (response) {
                 let resp = response.data;
+                let redirectt=resp.PayUrl.split("=");
+                
                 //console.log(resp);
                 if(resp.code=='0')
                 {
                // window.open(resp.payUrl, "_blank");
-               let redirectt=resp.PayUrl.split("=");
-               console.log(redirectt);
-               window.open(redirectt[1]+'='+redirectt[2],"_self");
+               if(resp.method=='bank')
+                {
+                    window.open(redirectt[1]+'='+redirectt[2],"_self");
+                }
+              else
+              {
+                window.open(resp.PayUrl,"_self");
+              }
+              
                 }
                 else
                 {

@@ -92,7 +92,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
         };
         //const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay/promptpay";//deposit_bigpay
         let url='';
-        var paymeth=payMethodRef.current.value;
+        var paymeth=payMethodRef.current.value;//
         let data=[];
         if(paymeth!='Bank')
         {

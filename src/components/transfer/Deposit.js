@@ -108,7 +108,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
             url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
             data=[
                 amount=amountRef.current.value,
-                bbn=bbnRef.current.value,
+                //bbn=bbnRef.current.value,
                 currency="baht",
                 platform=process.env.REACT_APP_PLATFORM
              ]

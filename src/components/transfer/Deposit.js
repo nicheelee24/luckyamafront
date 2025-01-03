@@ -93,27 +93,28 @@ export default function Deposit({ open, setOpen, type, setType }) {
         //const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay/promptpay";//deposit_bigpay
         let url='';
         var paymeth=payMethodRef.current.value;
-       
+        let data=[];
         if(paymeth!='Bank')
         {
          url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
+         data=[
+            amount=amountRef.current.value,
+           
+            currency="baht",
+            platform=process.env.REACT_APP_PLATFORM
+         ]
         }
         else
         {
             url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
-            bbn= bbnRef.current.value;
+           
         }
     
    
         await axios
             .post(
                 url,
-                {
-                    amount: amountRef.current.value,
-                    bbn: bbn,
-                    currency: "baht",
-                    platform: process.env.REACT_APP_PLATFORM,
-                },
+                data,
                 config
             )
             .then(function (response) {

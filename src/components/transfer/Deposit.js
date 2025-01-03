@@ -101,7 +101,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
             amount=amountRef.current.value,
             currency="baht",
             platform=process.env.REACT_APP_PLATFORM
-         ]
+         ];
         }
         else
         {
@@ -111,7 +111,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                 //bbn=bbnRef.current.value,
                 currency="baht",
                 platform=process.env.REACT_APP_PLATFORM
-             ]
+             ];
            
         }
     

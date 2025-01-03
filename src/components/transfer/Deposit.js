@@ -115,6 +115,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                 {
                // window.open(resp.payUrl, "_blank");
                let redirectt=resp.PayUrl.split("=");
+               console.log(redirectt);
                window.open(redirectt[1],"_self");
                 }
                 else

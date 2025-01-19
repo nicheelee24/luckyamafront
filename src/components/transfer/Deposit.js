@@ -33,15 +33,24 @@ export default function Deposit({ open, setOpen, type, setType }) {
     // const { socket, socketConnected } = useSocket();
 
     const dispatch = useDispatch();
+    const [checkProviderState, setProviderState] = useState(null)
     const [checkState, setCheckState] = useState(null)
     const [amount, setAmount] = useState(100);
     const [bbn, setBbn] = useState("");
+    const [provider, setProvider] = useState("");
     const [paymethod, setPayMethod] = useState("");
+    const [channeltype, setChannelType] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(false);
     const cancelButtonRef = useRef(null);
     const amountRef = useRef(null);
     const bbnRef = useRef(null);
     const payMethodRef = useRef(null);
+    const channelTypeRef = useRef(null);
+    const providerRef = useRef(null);
+    const providersList=[
+        "BigPayz",
+        "SmartPay"
+    ];
     const payMethods=[
         "QR Prompt Pay",
         "Bank"
@@ -50,6 +59,13 @@ export default function Deposit({ open, setOpen, type, setType }) {
         "BKKB",
         "KSKB",
         "KSAB",
+             
+    ];
+    //for spay
+    const channelTypes = [
+        "Bank",
+        "PromptPay",
+        "TruePay",
              
     ];
 
@@ -66,18 +82,145 @@ export default function Deposit({ open, setOpen, type, setType }) {
         const paymethod = e.target.value;
         setPayMethod(paymethod);
     };
+    const handleChannelTypeChange = (e) => {
+        const channeltype = e.target.value;
+        setChannelType(channeltype);
+    };
+    const handleProviderChange = (e) => {
+        setProviderState(!checkProviderState);
+        const provider = e.target.value;
+        setProvider(provider);
+    };
 
+    //smartpayz provider
     const handleDepositClick = async (e) => {
         e.preventDefault();
-        // call deposit API
-
+      
         const config = {
             headers: {
                 "content-type": "application/json",
                 "x-auth-token": window.localStorage.getItem("token"),
             },
         };
-        //const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay/promptpay";//deposit_bigpay
+
+      var providerr=providerRef.current.value;
+       
+        let url='';
+        
+        var currency;
+        var platform;
+       let data=[];
+       if(providerr=='BigPayz')
+       {
+        var paymeth=payMethodRef.current.value;
+        if(paymeth!='Bank')
+        {
+         url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
+         data=[
+            amountRef.current.value
+            
+         ]
+        }
+        else
+        {
+            url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
+            data=[
+               amountRef.current.value,
+               bbnRef.current.value
+              
+             ]
+        }
+    }
+    else
+    {
+        url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay";
+        data=[
+           amountRef.current.value,
+           channelTypeRef.current.value
+          
+         ]
+    }
+    
+   
+        await axios
+            .post(
+                url,
+                data,
+                config
+            )
+            .then(function (response) {
+                let resp = response.data;
+                console.log("bank apii response..."+resp);
+                if(resp.gateway!='spay')
+                {
+                let redirectt=resp.PayUrl.split("=");
+                
+               
+                if(resp.code=='0')
+                {
+              
+               if(resp.method=='bank')
+                {
+                    window.open(redirectt[1]+'='+redirectt[2],"_self");
+                }
+              else
+              {
+                window.open(resp.PayUrl,"_self");
+              }
+              
+                }
+                else
+                {
+                   
+                        toast.warning("API Response Code: "+resp.code+"-"+resp.msg, {
+                            position: "top-right",
+                            autoClose: 10000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                        });
+                     
+
+                    
+                  
+                   
+                   
+                   
+                
+               
+
+                }
+            }
+            })
+            .catch(function (err) {
+                console.log(err);
+
+                toast.error("Login or function error.", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                debugger;
+            });
+    };
+
+        //bigpayz provider
+    const handleDepositClick_bigpayz = async (e) => {
+        e.preventDefault();
+      
+        const config = {
+            headers: {
+                "content-type": "application/json",
+                "x-auth-token": window.localStorage.getItem("token"),
+            },
+        };
+       
         let url='';
         var paymeth=payMethodRef.current.value;
         var currency;
@@ -112,10 +255,10 @@ export default function Deposit({ open, setOpen, type, setType }) {
                 let resp = response.data;
                 let redirectt=resp.PayUrl.split("=");
                 
-                //console.log(resp);
+               
                 if(resp.code=='0')
                 {
-               // window.open(resp.payUrl, "_blank");
+              
                if(resp.method=='bank')
                 {
                     window.open(redirectt[1]+'='+redirectt[2],"_self");
@@ -138,7 +281,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                             progress: undefined,
                             theme: "light",
                         });
-                      //  window.location.reload();
+                     
 
                     
                   
@@ -200,63 +343,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
         const amount = amountRef.current.value;
 
         console.log(amount);
-        // const options = {
-        //   method: 'POST',
-        //   url: process.env.REACT_APP_BACKEND + '/api/auth',
-        //   headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        //   data: {
-        //     email,
-        //     password
-        //   }
-        // }
-
-        // await axios
-        //   .request(options)
-        //   .then(function (response) {
-        //     if (response.data.status === '0000') {
-        //       window.localStorage.setItem('token', response.data.token);
-        //       API.setAuthToken(response.data.token);
-        //       setOpen(false)
-        //       dispatch(setLoginState())
-        //       toast.success('Log In Successfully.', {
-        //         position: 'top-right',
-        //         autoClose: 5000,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: 'light'
-        //       })
-        //       // window.location.href = response.data.login_url;
-        //     } else {
-        //       toast.error(response.data.desc, {
-        //         position: 'top-right',
-        //         autoClose: 5000,
-        //         hideProgressBar: false,
-        //         closeOnClick: true,
-        //
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: 'light'
-        //       })
-        //     }
-        //   })
-        //   .catch(function (error) {
-        //     console.error(error)
-        //     failConnection()
-
-        //     toast.error('Log In Failed.', {
-        //       position: 'top-right',
-        //       autoClose: 5000,
-        //       hideProgressBar: false,
-        //       closeOnClick: true,
-        //
-        //       draggable: true,
-        //       progress: undefined,
-        //       theme: 'light'
-        //     })
-        //   })
+       
     };
 
     return (
@@ -311,6 +398,54 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                             {t("Deposit")}
                                         </h1>
                                         <div className="input-wrapper mt-5">
+                                            <label htmlFor="provider" className="!text-black font-semibold">
+                                                {t("Select Provider")}
+                                            </label>
+                                            <select 
+                                            checked={checkProviderState}
+                                                value={provider}
+                                                onChange={handleProviderChange}
+                                                ref={providerRef}
+                                                id="provider"
+                                                className="rounded-lg px-6 mt-3"
+                                                autoFocus
+                                            >
+                                                {/* <option value="">{t("Select Payment Method")}</option> */}
+                                                {providersList.map((provid) => (
+                                                    <option
+                                                        key={provid}
+                                                        value={provid}
+                                                    >
+                                                        {t(provid)}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        { checkProviderState &&  <div className="input-wrapper mt-5">
+                                            <label htmlFor="channeltype" className="!text-black font-semibold">
+                                                {t("Select Channel")}
+                                            </label>
+                                            <select 
+                                            
+                                                value={channeltype}
+                                                onChange={handleChannelTypeChange}
+                                                ref={channelTypeRef}
+                                                id="channeltype"
+                                                className="rounded-lg px-6 mt-3"
+                                                autoFocus
+                                            >
+                                                {/* <option value="">{t("Select Payment Method")}</option> */}
+                                                {channelTypes.map((chanl) => (
+                                                    <option
+                                                        key={chanl}
+                                                        value={chanl}
+                                                    >
+                                                        {t(chanl)}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>}
+                                       { !checkProviderState &&  <div className="input-wrapper mt-5">
                                             <label htmlFor="paymethod" className="!text-black font-semibold">
                                                 {t("Payment Method")}
                                             </label>
@@ -333,8 +468,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                     </option>
                                                 ))}
                                             </select>
-                                        </div>
-                                      { checkState && <div className="input-wrapper mt-5">
+                                        </div>}
+                                      {!checkProviderState && checkState && <div className="input-wrapper mt-5">
                                             <label htmlFor="bbn" className="!text-black font-semibold">
                                                 {t("Bank Name")}
                                             </label>

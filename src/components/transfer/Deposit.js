@@ -47,11 +47,11 @@ export default function Deposit({ open, setOpen, type, setType }) {
     const payMethodRef = useRef(null);
     const channelTypeRef = useRef(null);
     const providerRef = useRef(null);
-    const providersList=[
+    const providersList = [
         "BigPayz",
         "SmartPay"
     ];
-    const payMethods=[
+    const payMethods = [
         "QR Prompt Pay",
         "Bank"
     ];
@@ -59,14 +59,14 @@ export default function Deposit({ open, setOpen, type, setType }) {
         "BKKB",
         "KSKB",
         "KSAB",
-             
+
     ];
     //for spay
     const channelTypes = [
         "Bank",
         "PromptPay",
         "TruePay",
-             
+
     ];
 
     const handleAmountChange = (e) => {
@@ -95,7 +95,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
     //smartpayz provider
     const handleDepositClick = async (e) => {
         e.preventDefault();
-      
+
         const config = {
             headers: {
                 "content-type": "application/json",
@@ -103,45 +103,41 @@ export default function Deposit({ open, setOpen, type, setType }) {
             },
         };
 
-      var providerr=providerRef.current.value;
-       
-        let url='';
-        
+        var providerr = providerRef.current.value;
+
+        let url = '';
+
         var currency;
         var platform;
-       let data=[];
-       if(providerr=='BigPayz')
-       {
-        var paymeth=payMethodRef.current.value;
-        if(paymeth!='Bank')
-        {
-         url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
-         data=[
-            amountRef.current.value
-            
-         ]
+        let data = [];
+        if (providerr == 'BigPayz') {
+            var paymeth = payMethodRef.current.value;
+            if (paymeth != 'Bank') {
+                url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
+                data = [
+                    amountRef.current.value
+
+                ]
+            }
+            else {
+                url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
+                data = [
+                    amountRef.current.value,
+                    bbnRef.current.value
+
+                ]
+            }
         }
-        else
-        {
-            url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
-            data=[
-               amountRef.current.value,
-               bbnRef.current.value
-              
-             ]
+        else {
+            url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay";
+            data = [
+                amountRef.current.value,
+                channelTypeRef.current.value
+
+            ]
         }
-    }
-    else
-    {
-        url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay";
-        data=[
-           amountRef.current.value,
-           channelTypeRef.current.value
-          
-         ]
-    }
-    
-   
+
+
         await axios
             .post(
                 url,
@@ -150,29 +146,24 @@ export default function Deposit({ open, setOpen, type, setType }) {
             )
             .then(function (response) {
                 let resp = response.data;
-                console.log("bank apii response..."+resp);
-                if(resp.gateway!='spay')
-                {
-                let redirectt=resp.PayUrl.split("=");
-                
-               
-                if(resp.code=='0')
-                {
-              
-               if(resp.method=='bank')
-                {
-                    window.open(redirectt[1]+'='+redirectt[2],"_self");
-                }
-              else
-              {
-                window.open(resp.PayUrl,"_self");
-              }
-              
-                }
-                else
-                {
-                   
-                        toast.warning("API Response Code: "+resp.code+"-"+resp.msg, {
+                console.log("bank apii response..." + resp);
+                if (resp.gateway != 'spay') {
+                    let redirectt = resp.PayUrl.split("=");
+
+
+                    if (resp.code == '0') {
+
+                        if (resp.method == 'bank') {
+                            window.open(redirectt[1] + '=' + redirectt[2], "_self");
+                        }
+                        else {
+                            window.open(resp.PayUrl, "_self");
+                        }
+
+                    }
+                    else {
+
+                        toast.warning("API Response Code: " + resp.code + "-" + resp.msg, {
                             position: "top-right",
                             autoClose: 10000,
                             hideProgressBar: false,
@@ -181,18 +172,21 @@ export default function Deposit({ open, setOpen, type, setType }) {
                             progress: undefined,
                             theme: "light",
                         });
-                     
 
-                    
-                  
-                   
-                   
-                   
-                
-               
 
+
+
+
+
+
+
+
+
+                    }
                 }
-            }
+                else {
+                    window.open(resp.PayUrl, "_self");
+                }
             })
             .catch(function (err) {
                 console.log(err);
@@ -210,41 +204,39 @@ export default function Deposit({ open, setOpen, type, setType }) {
             });
     };
 
-        //bigpayz provider
+    //bigpayz provider
     const handleDepositClick_bigpayz = async (e) => {
         e.preventDefault();
-      
+
         const config = {
             headers: {
                 "content-type": "application/json",
                 "x-auth-token": window.localStorage.getItem("token"),
             },
         };
-       
-        let url='';
-        var paymeth=payMethodRef.current.value;
+
+        let url = '';
+        var paymeth = payMethodRef.current.value;
         var currency;
         var platform;
-       let data=[];
-        if(paymeth!='Bank')
-        {
-         url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
-         data=[
-            amountRef.current.value
-            
-         ]
+        let data = [];
+        if (paymeth != 'Bank') {
+            url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
+            data = [
+                amountRef.current.value
+
+            ]
         }
-        else
-        {
+        else {
             url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
-            data=[
-               amountRef.current.value,
-               bbnRef.current.value
-              
-             ]
+            data = [
+                amountRef.current.value,
+                bbnRef.current.value
+
+            ]
         }
-    
-   
+
+
         await axios
             .post(
                 url,
@@ -253,43 +245,39 @@ export default function Deposit({ open, setOpen, type, setType }) {
             )
             .then(function (response) {
                 let resp = response.data;
-                let redirectt=resp.PayUrl.split("=");
-                
-               
-                if(resp.code=='0')
-                {
-              
-               if(resp.method=='bank')
-                {
-                    window.open(redirectt[1]+'='+redirectt[2],"_self");
-                }
-              else
-              {
-                window.open(resp.PayUrl,"_self");
-              }
-              
-                }
-                else
-                {
-                   
-                        toast.warning("API Response Code: "+resp.code+"-"+resp.msg, {
-                            position: "top-right",
-                            autoClose: 10000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                        });
-                     
+                let redirectt = resp.PayUrl.split("=");
 
-                    
-                  
-                   
-                   
-                   
-                
-               
+
+                if (resp.code == '0') {
+
+                    if (resp.method == 'bank') {
+                        window.open(redirectt[1] + '=' + redirectt[2], "_self");
+                    }
+                    else {
+                        window.open(resp.PayUrl, "_self");
+                    }
+
+                }
+                else {
+
+                    toast.warning("API Response Code: " + resp.code + "-" + resp.msg, {
+                        position: "top-right",
+                        autoClose: 10000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+
+
+
+
+
+
+
+
+
 
                 }
             })
@@ -343,7 +331,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
         const amount = amountRef.current.value;
 
         console.log(amount);
-       
+
     };
 
     return (
@@ -401,8 +389,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                             <label htmlFor="provider" className="!text-black font-semibold">
                                                 {t("Select Provider")}
                                             </label>
-                                            <select 
-                                            checked={checkProviderState}
+                                            <select
+                                                checked={checkProviderState}
                                                 value={provider}
                                                 onChange={handleProviderChange}
                                                 ref={providerRef}
@@ -421,12 +409,12 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 ))}
                                             </select>
                                         </div>
-                                        { checkProviderState &&  <div className="input-wrapper mt-5">
+                                        {checkProviderState && <div className="input-wrapper mt-5">
                                             <label htmlFor="channeltype" className="!text-black font-semibold">
                                                 {t("Select Channel")}
                                             </label>
-                                            <select 
-                                            
+                                            <select
+
                                                 value={channeltype}
                                                 onChange={handleChannelTypeChange}
                                                 ref={channelTypeRef}
@@ -445,12 +433,12 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 ))}
                                             </select>
                                         </div>}
-                                       { !checkProviderState &&  <div className="input-wrapper mt-5">
+                                        {!checkProviderState && <div className="input-wrapper mt-5">
                                             <label htmlFor="paymethod" className="!text-black font-semibold">
                                                 {t("Payment Method")}
                                             </label>
-                                            <select 
-                                            checked={checkState}
+                                            <select
+                                                checked={checkState}
                                                 value={paymethod}
                                                 onChange={handlePayMethodChange}
                                                 ref={payMethodRef}
@@ -469,7 +457,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 ))}
                                             </select>
                                         </div>}
-                                      {!checkProviderState && checkState && <div className="input-wrapper mt-5">
+                                        {!checkProviderState && checkState && <div className="input-wrapper mt-5">
                                             <label htmlFor="bbn" className="!text-black font-semibold">
                                                 {t("Bank Name")}
                                             </label>
@@ -491,9 +479,9 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                     </option>
                                                 ))}
                                             </select>
-                                        </div> }<br/>
+                                        </div>}<br />
                                         <div className="input-wrapper">
-                                            <label htmlFor="amount"  className="text-black font-bold">
+                                            <label htmlFor="amount" className="text-black font-bold">
                                                 {t("Amount")}
                                             </label>
                                             {/* <label htmlFor='email'>{t("Email / Phone Number")}</label> */}

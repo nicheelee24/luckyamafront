@@ -34,13 +34,27 @@ export default function Withdraw({ open, setOpen, type, setType }) {
     const dispatch = useDispatch();
 
     const [amount, setAmount] = useState(100);
+    const [channeltype, setChannelType] = useState("");
+    const channelTypeRef = useRef(null);
     const [isEmailValid, setIsEmailValid] = useState(false);
     const cancelButtonRef = useRef(null);
     const amountRef = useRef(null);
 
+      //for spay
+      const channelTypes = [
+        "Bank",
+        "PromptPay",
+        "TruePay",
+
+    ];
+
     const handleAmountChange = (e) => {
         const amount = e.target.value;
         setAmount(amount);
+    };
+    const handleChannelTypeChange = (e) => {
+        const channeltype = e.target.value;
+        setChannelType(channeltype);
     };
 
     const handleWithdrawClick = async (e) => {
@@ -55,15 +69,19 @@ export default function Withdraw({ open, setOpen, type, setType }) {
                 "x-auth-token": window.localStorage.getItem("token"),
             },
         };
-        const url = process.env.REACT_APP_BACKEND + "/api/pay/bigpayz_withdraw";
+        let data = [];
+        //bigpayz url 
+        //const url = process.env.REACT_APP_BACKEND + "/api/pay/bigpayz_withdraw";
+        const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay_withdraw";
+        data = [
+            amountRef.current.value,
+            channelTypeRef.current.value
 
+        ]
         await axios
             .post(
                 url,
-                {
-                    amount: amountRef.current.value,
-                    platform: process.env.REACT_APP_PLATFORM,
-                },
+                data,
                 config
             )
             .then(function (response) {
@@ -267,6 +285,30 @@ else
                                         <h1 className="mb-12 !text-xl md:text-2xl text-black font-bold">
                                             {t("Withdraw")}
                                         </h1>
+                                        <div className="input-wrapper mt-5">
+                                            <label htmlFor="channeltype" className="!text-black font-semibold">
+                                                {t("Select Channel")}
+                                            </label>
+                                            <select
+
+                                                value={channeltype}
+                                                onChange={handleChannelTypeChange}
+                                                ref={channelTypeRef}
+                                                id="channeltype"
+                                                className="rounded-lg px-6 mt-3"
+                                                autoFocus
+                                            >
+                                                {/* <option value="">{t("Select Payment Method")}</option> */}
+                                                {channelTypes.map((chanl) => (
+                                                    <option
+                                                        key={chanl}
+                                                        value={chanl}
+                                                    >
+                                                        {t(chanl)}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
                                         <div className="input-wrapper">
                                             <label htmlFor="amount" className="text-black font-semibold">
                                                 {t("Amount")}

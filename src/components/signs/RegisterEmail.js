@@ -50,25 +50,49 @@ export default function RegisterEmail({ open, setOpen, type, setType }) {
     const [isReceive, setIsReceive] = useState(false);
     const [mybets, setMybets] = useState([]);
 
+   //Bigpayz Bank Codes
+
+    // const bankLists = [
+    //     "KBANK",
+    //     "SCBB",
+    //     "BBL",
+    //     "KTBA",
+    //     "TTB",
+    //     "CITI",
+    //     "SCBT",
+    //     "CIMB",
+    //     "UOBT",
+    //     "BAY",
+    //     "GOV",
+    //     "GHB",
+    //     "BAAC",
+    //     "BOCM",
+    //     "ISBT",
+    //     "KK",
+    //     "ICBC",
+    //     "LHBANK",
+    // ];
+
+    //SPAY Bank Codes
     const bankLists = [
-        "KBANK",
-        "SCBB",
-        "BBL",
-        "KTBA",
-        "TTB",
-        "CITI",
-        "SCBT",
-        "CIMB",
-        "UOBT",
-        "BAY",
-        "GOV",
-        "GHB",
-        "BAAC",
-        "BOCM",
-        "ISBT",
-        "KK",
-        "ICBC",
-        "LHBANK",
+        "T_KBANK",
+        "T_SCBT",
+        "T_BBL",
+        "T_BOCHK",
+        "T_CIMB",
+        "T_GSB",
+        "T_ISBT",
+        "T_KKP",
+        "T_KTB",
+        "T_SMBC",
+        "T_TCRB",
+        "T_TH_CITI",
+        "T_TH_HSBC",
+        "T_TH_ICBC",
+        "T_TH_SCB",
+        "T_TISCO",
+        "T_TMB",
+        "T_UOB",
     ];
     
     

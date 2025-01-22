@@ -103,7 +103,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
             },
         };
 
-        var providerr = providerRef.current.value;
+       // var providerr = providerRef.current.value;
 
         let url = '';
 

@@ -110,32 +110,14 @@ export default function Deposit({ open, setOpen, type, setType }) {
         var currency;
         var platform;
         let data = [];
-        if (providerr == 'BigPayz') {
-            var paymeth = payMethodRef.current.value;
-            if (paymeth != 'Bank') {
-                url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_qr";
-                data = [
-                    amountRef.current.value
-
-                ]
-            }
-            else {
-                url = process.env.REACT_APP_BACKEND + "/api/pay/deposit_bigpay_bank";
-                data = [
-                    amountRef.current.value,
-                    bbnRef.current.value
-
-                ]
-            }
-        }
-        else {
+       
             url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay";
             data = [
                 amountRef.current.value,
                 channelTypeRef.current.value
 
             ]
-        }
+        
 
 
         await axios
@@ -147,46 +129,9 @@ export default function Deposit({ open, setOpen, type, setType }) {
             .then(function (response) {
                 let resp = response.data;
                 console.log("bank apii response..." + resp);
-                if (resp.gateway != 'spay') {
-                    let redirectt = resp.PayUrl.split("=");
-
-
-                    if (resp.code == '0') {
-
-                        if (resp.method == 'bank') {
-                            window.open(redirectt[1] + '=' + redirectt[2], "_self");
-                        }
-                        else {
-                            window.open(resp.PayUrl, "_self");
-                        }
-
-                    }
-                    else {
-
-                        toast.warning("API Response Code: " + resp.code + "-" + resp.msg, {
-                            position: "top-right",
-                            autoClose: 10000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                        });
-
-
-
-
-
-
-
-
-
-
-                    }
-                }
-                else {
+                
                     window.open(resp.PayUrl, "_self");
-                }
+                
             })
             .catch(function (err) {
                 console.log(err);
@@ -385,31 +330,8 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                         <h1 className="mb-12  !text-xl md:text-2xl text-black font-bold">
                                             {t("Deposit")}
                                         </h1>
-                                        <div className="input-wrapper mt-5">
-                                            <label htmlFor="provider" className="!text-black font-semibold">
-                                                {t("Select Provider")}
-                                            </label>
-                                            <select
-                                                checked={checkProviderState}
-                                                value={provider}
-                                                onChange={handleProviderChange}
-                                                ref={providerRef}
-                                                id="provider"
-                                                className="rounded-lg px-6 mt-3"
-                                                autoFocus
-                                            >
-                                                {/* <option value="">{t("Select Payment Method")}</option> */}
-                                                {providersList.map((provid) => (
-                                                    <option
-                                                        key={provid}
-                                                        value={provid}
-                                                    >
-                                                        {t(provid)}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        {checkProviderState && <div className="input-wrapper mt-5">
+                                      
+                                         <div className="input-wrapper mt-5">
                                             <label htmlFor="channeltype" className="!text-black font-semibold">
                                                 {t("Select Channel")}
                                             </label>
@@ -432,54 +354,9 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                     </option>
                                                 ))}
                                             </select>
-                                        </div>}
-                                        {!checkProviderState && <div className="input-wrapper mt-5">
-                                            <label htmlFor="paymethod" className="!text-black font-semibold">
-                                                {t("Payment Method")}
-                                            </label>
-                                            <select
-                                                checked={checkState}
-                                                value={paymethod}
-                                                onChange={handlePayMethodChange}
-                                                ref={payMethodRef}
-                                                id="paymethod"
-                                                className="rounded-lg px-6 mt-3"
-                                                autoFocus
-                                            >
-                                                {/* <option value="">{t("Select Payment Method")}</option> */}
-                                                {payMethods.map((paym) => (
-                                                    <option
-                                                        key={paym}
-                                                        value={paym}
-                                                    >
-                                                        {t(paym)}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>}
-                                        {!checkProviderState && checkState && <div className="input-wrapper mt-5">
-                                            <label htmlFor="bbn" className="!text-black font-semibold">
-                                                {t("Bank Name")}
-                                            </label>
-                                            <select
-                                                value={bbn}
-                                                onChange={handleBBNChange}
-                                                ref={bbnRef}
-                                                id="bbn"
-                                                className="rounded-lg px-6 mt-3"
-                                                autoFocus
-                                            >
-                                                <option value="">{t("Select Bank")}</option>
-                                                {bankLists.map((bank) => (
-                                                    <option
-                                                        key={bank}
-                                                        value={bank}
-                                                    >
-                                                        {t(bank)}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>}<br />
+                                        </div>
+                                       
+                                       <br />
                                         <div className="input-wrapper">
                                             <label htmlFor="amount" className="text-black font-bold">
                                                 {t("Amount")}

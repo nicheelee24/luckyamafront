@@ -354,6 +354,30 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                     </option>
                                                 ))}
                                             </select>
+                                        </div><br/>
+                                        <div className="input-wrapper mt-5">
+                                            <label htmlFor="bbn" className="!text-black font-semibold">
+                                                {t("Select Payment Bank")}
+                                            </label>
+                                            <select
+
+                                                value={bbn}
+                                                onChange={handleBBNChange}
+                                                ref={bbnRef}
+                                                id="bbn"
+                                                className="rounded-lg px-6 mt-3"
+                                                autoFocus
+                                            >
+                                                {<option value="">{t("Select Bank")}</option>}
+                                                {bankLists.map((bnk) => (
+                                                    <option
+                                                        key={bnk}
+                                                        value={bnk}
+                                                    >
+                                                        {t(bnk)}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
                                        
                                        <br />

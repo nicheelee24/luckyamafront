@@ -333,7 +333,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                       
                                          <div className="input-wrapper mt-5">
                                             <label htmlFor="paymethod" className="!text-black font-semibold">
-                                                {t("Payment Channel")}
+                                                {t("Select Channel")}
                                             </label>
                                             <select
 
@@ -344,7 +344,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 className="rounded-lg px-6 mt-3"
                                                 autoFocus
                                             >
-                                                {<option value="">{t("Select Channel")}</option>}
+                                                
                                                 {payMethods.map((chanl) => (
                                                     <option
                                                         key={chanl}
@@ -357,7 +357,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                         </div><br/>
                                         {!checkState && (  <div className="input-wrapper mt-5">
                                             <label htmlFor="bbn" className="!text-black font-semibold">
-                                                {t("Select Bank")}
+                                                {t("Select Payment Bank")}
                                             </label>
                                             <select
 
@@ -368,7 +368,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 className="rounded-lg px-6 mt-3"
                                                 autoFocus
                                             >
-                                                
+                                                {<option value="">{t("Select Bank")}</option>}
                                                 {bankLists.map((bnk) => (
                                                     <option
                                                         key={bnk}

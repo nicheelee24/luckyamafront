@@ -355,7 +355,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 ))}
                                             </select>
                                         </div><br/>
-                                        {!checkState && (  <div className="input-wrapper mt-5">
+                                        {checkState && (  <div className="input-wrapper mt-5">
                                             <label htmlFor="bbn" className="!text-black font-semibold">
                                                 {t("Select Payment Bank")}
                                             </label>

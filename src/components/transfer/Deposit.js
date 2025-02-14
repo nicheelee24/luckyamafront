@@ -93,7 +93,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
     };
 
     //smartpayz provider
-    const handleDepositClick = async (e) => {
+    const handleDepositClick_smartpay = async (e) => {
         e.preventDefault();
 
         const config = {
@@ -150,7 +150,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
     };
 
     //bigpayz provider
-    const handleDepositClick_bigpayz = async (e) => {
+    const handleDepositClick = async (e) => {
         e.preventDefault();
 
         const config = {
@@ -337,15 +337,15 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                             </label>
                                             <select
 
-                                                value={channeltype}
-                                                onChange={handleChannelTypeChange}
-                                                ref={channelTypeRef}
-                                                id="channeltype"
+                                                value={paymethod}
+                                                onChange={handlePayMethodChange}
+                                                ref={payMethodRef}
+                                                id="paymthod"
                                                 className="rounded-lg px-6 mt-3"
                                                 autoFocus
                                             >
                                                 {/* <option value="">{t("Select Payment Method")}</option> */}
-                                                {channelTypes.map((chanl) => (
+                                                {payMethods.map((chanl) => (
                                                     <option
                                                         key={chanl}
                                                         value={chanl}

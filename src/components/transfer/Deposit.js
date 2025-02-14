@@ -78,7 +78,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
         setBbn(bbn);
     };
     const handlePayMethodChange = (e) => {
-        setCheckState(checkState);
+        setCheckState(!checkState);
         const paymethod = e.target.value;
         setPayMethod(paymethod);
     };
@@ -333,7 +333,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                       
                                          <div className="input-wrapper mt-5">
                                             <label htmlFor="paymethod" className="!text-black font-semibold">
-                                                {t("Select Channel")}
+                                                {t("Payment Channel")}
                                             </label>
                                             <select
 
@@ -344,7 +344,7 @@ export default function Deposit({ open, setOpen, type, setType }) {
                                                 className="rounded-lg px-6 mt-3"
                                                 autoFocus
                                             >
-                                                {/* <option value="">{t("Select Payment Method")}</option> */}
+                                                {<option value="">{t("Select Channel")}</option>}
                                                 {payMethods.map((chanl) => (
                                                     <option
                                                         key={chanl}

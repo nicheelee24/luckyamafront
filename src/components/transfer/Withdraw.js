@@ -71,11 +71,11 @@ export default function Withdraw({ open, setOpen, type, setType }) {
         };
         let data = [];
         //bigpayz url 
-        //const url = process.env.REACT_APP_BACKEND + "/api/pay/bigpayz_withdraw";
-        const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay_withdraw";
+        const url = process.env.REACT_APP_BACKEND + "/api/pay/bigpayz_withdraw";
+        //const url = process.env.REACT_APP_BACKEND + "/api/pay/smartpay_withdraw";
         data = [
             amountRef.current.value,
-            channelTypeRef.current.value
+           // channelTypeRef.current.value
 
         ]
         await axios
